@@ -1,7 +1,22 @@
 {{ header }}
-<div id="common-home" class="container">
+<div id="common-home" class="container lb-home">
   <div class="row">{{ column_left }}
-    <div id="content" class="col">{{ content_top }}{{ content_bottom }}</div>
+    <div id="content" class="col">
+      <section class="lb-hero" aria-labelledby="lb-hero-title">
+        <div class="lb-hero-copy">
+          <p class="lb-eyebrow">Liana Beauty / Perfumes &amp; beleza</p>
+          <h1 id="lb-hero-title">A tua essência.<br><em>A tua presença.</em></h1>
+          <p class="lb-hero-intro">O perfume que te acompanha. A beleza que fazes tua.</p>
+          <a class="btn btn-primary lb-hero-cta" href="#lb-discover">Encontra a tua inspiração <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="lb-hero-art" aria-hidden="true">
+          {# Temporary original, unbranded illustration. Replace with licensed campaign photography. #}
+          <img src="catalog/view/image/lianabeauty/hero-perfume.svg" width="720" height="800" alt="" fetchpriority="high" decoding="async"/>
+          <span class="lb-hero-signature">Uma essência só tua.</span>
+        </div>
+      </section>
+      <div id="lb-discover" class="lb-home-modules" tabindex="-1">{{ content_top }}{{ content_bottom }}</div>
+    </div>
     {{ column_right }}</div>
 </div>
 {{ footer }}
