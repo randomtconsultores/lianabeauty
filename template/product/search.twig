@@ -1,4 +1,33 @@
 {{ header }}
+<style>
+/* Shared category/search presentation; IDs and JavaScript contracts unchanged. */
+@media (max-width: 991.98px) {
+  :is(#product-category, #product-search) .lb-catalog-title { font-size: 1.5rem; line-height: 1.25; margin-bottom: .75rem !important; }
+  #product-category .lb-category-intro { margin-bottom: 1rem !important; }
+  #product-category .lb-subcategories { flex-wrap: nowrap !important; overflow-x: auto; padding-bottom: .25rem; }
+  #product-category .lb-subcategories > li { flex: 0 0 auto; }
+  :is(#product-category, #product-search) .lb-catalog-toolbar > .lb-catalog-secondary { display: none; }
+  :is(#product-category, #product-search) .lb-catalog-toolbar > .lb-catalog-option { flex: 0 0 50%; width: 50%; min-width: 0; }
+  :is(#product-category, #product-search) .lb-catalog-toolbar .input-group-text { font-size: .75rem; padding-inline: .5rem; }
+  :is(#product-category, #product-search) .lb-catalog-toolbar .form-select { min-width: 0; font-size: .8rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] { --bs-gutter-x: .75rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] > .col { flex: 0 0 50%; width: 50%; max-width: 50%; min-width: 0; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .image { padding: .65rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .description { padding: .25rem .65rem .75rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card h4 { font-size: .95rem; min-height: 2.8em; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .description > p { display: none; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .price-new { font-size: 1rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .button { display: block; padding: 0 .65rem .65rem; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .button button:not(:first-child) { display: none; }
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] .lb-product-card .button button:first-child { width: 100%; min-height: 44px; }
+  #product-search .lb-search-panel { padding: 1rem !important; margin-bottom: 1rem !important; }
+  #product-search #input-search { font-size: 16px; }
+  #product-search #button-search { width: 100%; }
+}
+@media (max-width: 359.98px) {
+  :is(#product-category, #product-search) #product-list[data-lb-catalog] > .col { flex-basis: 100%; width: 100%; max-width: 100%; }
+}
+</style>
 <div id="product-search" class="container">
   <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
@@ -9,8 +38,10 @@
     {{ column_left }}
     <div id="content" class="col">
       {{ content_top }}
-      <h1 class="mb-4">{{ heading_title }}</h1>
-      <div class="p-3 p-md-4 mb-4 bg-white border rounded-3" role="search" aria-label="{{ text_search }}">
+      <h1 class="mb-4 lb-catalog-title">{{ heading_title }}</h1>
+      <button type="button" class="btn btn-light d-lg-none mb-3" data-bs-toggle="collapse" data-bs-target="#lb-search-options" aria-controls="lb-search-options" aria-expanded="{% if not search or category_id or description or sub_category %}true{% else %}false{% endif %}">{{ text_search }} <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+      <div id="lb-search-options" class="collapse d-lg-block{% if not search or category_id or description or sub_category %} show{% endif %}">
+      <div class="p-3 p-md-4 mb-4 bg-white border rounded-3 lb-search-panel" role="search" aria-label="{{ text_search }}">
       <div class="row row-cols-1 row-cols-md-2 g-3">
         <div class="col">
           <label for="input-search" class="form-label">{{ entry_search }}</label>
@@ -46,21 +77,22 @@
         </div>
       </div>
       </div>
+      </div>
       <h2 class="h3 mb-3">{{ text_search }}</h2>
       {% if products %}
-        <div id="display-control" class="row align-items-end g-2 mb-3">
-          <div class="col-12 col-sm-8 col-lg-3">
+        <div id="display-control" class="row align-items-end g-2 mb-3 lb-catalog-toolbar">
+          <div class="col-12 col-sm-8 col-lg-3 lb-catalog-secondary">
             <div class="mb-0">
               <a href="{{ compare }}" id="compare-total" class="btn btn-primary d-block"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i> <span class="d-inline">{{ text_compare }}</span></a>
             </div>
           </div>
-          <div class="col-12 col-sm-4 col-lg-2">
+          <div class="col-12 col-sm-4 col-lg-2 lb-catalog-secondary">
             <div class="btn-group w-100">
               <button type="button" id="button-list" class="btn btn-light" data-bs-toggle="tooltip" title="{{ button_list }}" aria-label="{{ button_list }}"><i class="fa-solid fa-table-list" aria-hidden="true"></i></button>
               <button type="button" id="button-grid" class="btn btn-light" data-bs-toggle="tooltip" title="{{ button_grid }}" aria-label="{{ button_grid }}"><i class="fa-solid fa-table-cells" aria-hidden="true"></i></button>
             </div>
           </div>
-          <div class="col-12 col-sm-6 col-lg-4">
+          <div class="col-12 col-sm-6 col-lg-4 lb-catalog-option">
             <div class="input-group mb-0">
               <label for="input-sort" class="input-group-text">{{ text_sort }}</label>
               <select id="input-sort" class="form-select" onchange="location = this.value;">
@@ -70,7 +102,7 @@
               </select>
             </div>
           </div>
-          <div class="col-12 col-sm-6 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3 lb-catalog-option">
             <div class="input-group mb-0">
               <label for="input-limit" class="input-group-text">{{ text_limit }}</label>
               <select id="input-limit" class="form-select" onchange="location = this.value;">
@@ -81,7 +113,7 @@
             </div>
           </div>
         </div>
-        <div id="product-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4">
+        <div id="product-list" data-lb-catalog="true" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4">
           {% for product in products %}
             <div class="col mb-3">{{ product }}</div>
           {% endfor %}
