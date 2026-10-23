@@ -1,4 +1,20 @@
 {{ header }}
+<style>
+/* Product purchase hierarchy; existing forms and JavaScript remain intact. */
+@media (max-width: 991.98px) {
+  #product-info .lb-product-layout { --bs-gutter-y: 1rem; }
+  #product-info .lb-product-availability { margin-bottom: .75rem !important; }
+  #product-info .lb-product-price { margin-bottom: 1rem !important; }
+  #product-info #product { padding: 1rem !important; margin-bottom: 1rem !important; }
+  #product-info #form-product > hr:first-child { display: none; }
+  #product-info #form-product .lb-product-quantity { flex: 0 0 30%; width: 30%; min-width: 0; }
+  #product-info #form-product .lb-product-cart { flex: 0 0 70%; width: 70%; min-width: 0; }
+  #product-info #input-quantity { min-height: 48px; font-size: 16px; text-align: center; }
+  #product-info #button-cart { min-height: 48px; white-space: normal; }
+  #product-info .lb-product-secondary { margin-bottom: 1rem !important; }
+  #product-info .lb-product-details > button { min-height: 44px; white-space: normal; }
+}
+</style>
 <div id="product-info" class="container">
   <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
@@ -21,7 +37,7 @@
           </div>
         {% endif %}
       </div>
-      <div class="row g-4 mb-4">
+      <div class="row g-4 mb-4 lb-product-layout">
         {% if thumb or images %}
           <div class="col-12 col-lg-6">
             <div class="image magnific-popup p-3 p-md-4 bg-white border rounded-3">
@@ -40,34 +56,14 @@
         {% endif %}
         <div class="{% if thumb or images %}col-12 col-lg-6{% else %}col-12{% endif %}">
           <h1 class="mb-3 text-break d-none d-lg-block">{{ heading_title }}</h1>
-          <ul class="list-unstyled mb-4">
+          <ul class="list-unstyled mb-4 lb-product-availability">
             {% if manufacturer %}
               <li>{{ text_manufacturer }} <a href="{{ manufacturers }}">{{ manufacturer }}</a></li>
             {% endif %}
-            <li>{{ text_model }} {{ model }}</li>
-            {% for product_code in product_codes %}
-              <li>{{ product_code.code }}: {{ product_code.value }}</li>
-            {% endfor %}
-            {% if reward %}
-              <li>{{ text_reward }} {{ reward }}</li>
-            {% endif %}
             <li>{{ text_stock }} {{ stock }}</li>
           </ul>
-          {% if review_status %}
-            <div class="rating">
-              <p>
-                {% for i in 1..5 %}
-                  {% if rating < i %}
-                    <span class="fa-stack"><i class="fa-regular fa-star fa-stack-1x"></i></span>
-                  {% else %}
-                    <span class="fa-stack"><i class="fa-solid fa-star fa-stack-1x"></i><i class="fa-regular fa-star fa-stack-1x"></i></span>
-                  {% endif %}
-                {% endfor %}
-                <a href="#" onclick="$('a[href=\'#tab-review\']').tab('show'); return false;">{{ text_reviews }}</a> / <a href="#" onclick="$('a[href=\'#tab-review\']').tab('show'); return false;">{{ text_write }}</a></p>
-            </div>
-          {% endif %}
           {% if price %}
-            <ul class="list-unstyled mb-4">
+            <ul class="list-unstyled mb-4 lb-product-price">
               {% if not special %}
                 <li><h2 class="h3 mb-2"><span class="price-new">{{ price }}</span></h2></li>
               {% else %}
@@ -90,13 +86,6 @@
               {% endif %}
             </ul>
           {% endif %}
-          <form method="post" data-oc-toggle="ajax" class="mb-4">
-            <div class="btn-group">
-              <button type="submit" formaction="{{ wishlist_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_wishlist }}" aria-label="{{ button_wishlist }}"><i class="fa-solid fa-heart" aria-hidden="true"></i></button>
-              <button type="submit" formaction="{{ compare_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_compare }}" aria-label="{{ button_compare }}"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i></button>
-            </div>
-            <input type="hidden" name="product_id" value="{{ product_id }}"/>
-          </form>
           <div id="product" class="p-3 p-md-4 bg-white border rounded-3 mb-4">
             <form id="form-product">
               {% if options %}
@@ -234,10 +223,10 @@
               <div class="mb-3">
                 <label for="input-quantity" class="form-label">{{ entry_qty }}</label>
                 <div class="row g-2">
-                  <div class="col-12 col-sm-4">
+                  <div class="col-12 col-sm-4 lb-product-quantity">
                     <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" inputmode="numeric" aria-describedby="error-quantity"/>
                   </div>
-                  <div class="col-12 col-sm-8 d-grid">
+                  <div class="col-12 col-sm-8 d-grid lb-product-cart">
                     <button type="submit" id="button-cart" class="btn btn-primary btn-lg btn-block w-100">{{ button_cart }}</button>
                   </div>
                 </div>
@@ -248,6 +237,41 @@
                 <div class="alert alert-warning"><i class="fa-solid fa-circle-info"></i> {{ text_minimum }}</div>
               {% endif %}
             </form>
+          </div>
+          <form method="post" data-oc-toggle="ajax" class="mb-4 lb-product-secondary">
+            <div class="btn-group">
+              <button type="submit" formaction="{{ wishlist_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_wishlist }}" aria-label="{{ button_wishlist }}"><i class="fa-solid fa-heart" aria-hidden="true"></i></button>
+              <button type="submit" formaction="{{ compare_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_compare }}" aria-label="{{ button_compare }}"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i></button>
+            </div>
+            <input type="hidden" name="product_id" value="{{ product_id }}"/>
+          </form>
+          {% if review_status %}
+            <div class="rating lb-product-secondary">
+              <p>
+                {% for i in 1..5 %}
+                  {% if rating < i %}
+                    <span class="fa-stack"><i class="fa-regular fa-star fa-stack-1x"></i></span>
+                  {% else %}
+                    <span class="fa-stack"><i class="fa-solid fa-star fa-stack-1x"></i><i class="fa-regular fa-star fa-stack-1x"></i></span>
+                  {% endif %}
+                {% endfor %}
+                <a href="#" onclick="$('a[href=\'#tab-review\']').tab('show'); return false;">{{ text_reviews }}</a> / <a href="#" onclick="$('a[href=\'#tab-review\']').tab('show'); return false;">{{ text_write }}</a></p>
+            </div>
+          {% endif %}
+          <div class="mb-4 lb-product-details">
+            <h2 class="h5 d-none d-lg-block">{{ tab_attribute|default(text_model) }}</h2>
+            <button type="button" class="btn btn-light d-lg-none w-100 text-start" data-bs-toggle="collapse" data-bs-target="#lb-product-details" aria-controls="lb-product-details" aria-expanded="false">{{ tab_attribute|default(text_model) }} <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            <div id="lb-product-details" class="collapse d-lg-block">
+              <ul class="list-unstyled mt-3 mb-0">
+            <li>{{ text_model }} {{ model }}</li>
+            {% for product_code in product_codes %}
+              <li>{{ product_code.code }}: {{ product_code.value }}</li>
+            {% endfor %}
+            {% if reward %}
+              <li>{{ text_reward }} {{ reward }}</li>
+            {% endif %}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
