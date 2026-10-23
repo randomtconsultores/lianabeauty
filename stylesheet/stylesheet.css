@@ -453,7 +453,9 @@ footer h5 {
   --bs-primary: var(--lb-pink);
   --bs-primary-rgb: 201, 0, 96;
   --bs-link-color: var(--lb-pink);
+  --bs-link-color-rgb: 201, 0, 96;
   --bs-link-hover-color: var(--lb-pink-dark);
+  --bs-link-hover-color-rgb: 166, 0, 79;
 }
 body { margin: 0; background: var(--lb-paper); color: var(--lb-ink); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: .9375rem; line-height: 1.6; }
 h1, h2, h3, h4, h5, h6 { color: var(--lb-ink); }
