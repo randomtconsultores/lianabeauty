@@ -85,7 +85,7 @@
   <nav id="top" class="offcanvas-lg offcanvas-end" tabindex="-1" aria-labelledby="lb-preferences-title">
     <div class="offcanvas-header">
       <h2 class="offcanvas-title h5" id="lb-preferences-title">Conta e preferências</h2>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#top" aria-label="Fechar"></button>
     </div>
     <div class="offcanvas-body">
     <div class="container">
@@ -152,7 +152,7 @@
     <div id="lb-mobile-navigation" class="offcanvas-lg offcanvas-start" tabindex="-1" aria-labelledby="lb-navigation-title">
       <div class="offcanvas-header">
         <h2 class="offcanvas-title h5" id="lb-navigation-title">Menu</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#lb-mobile-navigation" aria-label="Fechar"></button>
       </div>
       <div class="offcanvas-body">{{ menu }}</div>
     </div>
