@@ -7,18 +7,25 @@
   </ul>
   <div class="row">{{ column_left }}
     <div id="content" class="col">{{ content_top }}
-      <h1 class="mb-4">{{ heading_title }}</h1>
-      {% if image or description %}
-        <div class="row">
-          {% if image %}
-            <div class="col-12 col-sm-3 text-center text-sm-start"><img src="{{ image }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail img-fluid"/></div>
-          {% endif %}
-          {% if description %}
-            <div class="{% if image %}col-12 col-sm-9{% else %}col-12{% endif %}">{{ description }}</div>
+      <div class="row align-items-center g-3 mb-4">
+        <div class="col" style="min-width: 0;">
+          <h1 class="mb-4">{{ heading_title }}</h1>
+          {% if image or description %}
+            <div class="row">
+              {% if image %}
+                <div class="col-12 col-sm-3 text-center text-sm-start"><img src="{{ image }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail img-fluid"/></div>
+              {% endif %}
+              {% if description %}
+                <div class="{% if image %}col-12 col-sm-9{% else %}col-12{% endif %}">{{ description }}</div>
+              {% endif %}
+            </div>
+            <hr/>
           {% endif %}
         </div>
-        <hr/>
-      {% endif %}
+        <div class="col-auto d-none d-lg-block" aria-hidden="true">
+          <img src="image/catalog/liana.png" alt="" class="d-block" style="height: 180px; width: auto; max-width: 180px; object-fit: contain;" decoding="async"/>
+        </div>
+      </div>
 
       {% if categories %}
         <h2 class="h4 mb-3">{{ text_refine }}</h2>
