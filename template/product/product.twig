@@ -8,15 +8,15 @@
   <div class="row">{{ column_left }}
     <div id="content" class="col">
       {{ content_top }}
-      <div class="row mb-3">
+      <div class="row g-4 mb-4">
         {% if thumb or images %}
-          <div class="col-sm">
-            <div class="image magnific-popup">
+          <div class="col-12 col-lg-6">
+            <div class="image magnific-popup p-3 p-md-4 bg-white border rounded-3">
               {% if thumb %}
-                <a href="{{ popup }}" title="{{ heading_title }}"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" class="img-thumbnail mb-3"/></a>
+                <a href="{{ popup }}" title="{{ heading_title }}" class="d-block text-center"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" class="img-thumbnail img-fluid border-0 mb-3" decoding="async"/></a>
               {% endif %}
               {% if images %}
-                <div>
+                <div class="d-flex flex-wrap gap-2">
                   {% for image in images %}
                     <a href="{{ image.popup }}" title="{{ heading_title }}"><img src="{{ image.thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" class="img-thumbnail"/></a>&nbsp;
                   {% endfor %}
@@ -25,9 +25,9 @@
             </div>
           </div>
         {% endif %}
-        <div class="col-sm">
-          <h1>{{ heading_title }}</h1>
-          <ul class="list-unstyled">
+        <div class="{% if thumb or images %}col-12 col-lg-6{% else %}col-12{% endif %}">
+          <h1 class="mb-3 text-break">{{ heading_title }}</h1>
+          <ul class="list-unstyled mb-4">
             {% if manufacturer %}
               <li>{{ text_manufacturer }} <a href="{{ manufacturers }}">{{ manufacturer }}</a></li>
             {% endif %}
@@ -54,12 +54,12 @@
             </div>
           {% endif %}
           {% if price %}
-            <ul class="list-unstyled">
+            <ul class="list-unstyled mb-4">
               {% if not special %}
-                <li><h2><span class="price-new">{{ price }}</span></h2></li>
+                <li><h2 class="h3 mb-2"><span class="price-new">{{ price }}</span></h2></li>
               {% else %}
                 <li><span class="price-old">{{ price }}</span></li>
-                <li><h2><span class="price-new">{{ special }}</span></h2></li>
+                <li><h2 class="h3 mb-2"><span class="price-new">{{ special }}</span></h2></li>
               {% endif %}
               {% if tax %}
                 <li>{{ text_tax }} {{ tax }}</li>
@@ -77,19 +77,18 @@
               {% endif %}
             </ul>
           {% endif %}
-          <form method="post" data-oc-toggle="ajax">
+          <form method="post" data-oc-toggle="ajax" class="mb-4">
             <div class="btn-group">
-              <button type="submit" formaction="{{ wishlist_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_wishlist }}"><i class="fa-solid fa-heart"></i></button>
-              <button type="submit" formaction="{{ compare_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_compare }}"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
+              <button type="submit" formaction="{{ wishlist_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_wishlist }}" aria-label="{{ button_wishlist }}"><i class="fa-solid fa-heart" aria-hidden="true"></i></button>
+              <button type="submit" formaction="{{ compare_add }}" data-bs-toggle="tooltip" class="btn btn-light btn-lg" title="{{ button_compare }}" aria-label="{{ button_compare }}"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i></button>
             </div>
             <input type="hidden" name="product_id" value="{{ product_id }}"/>
           </form>
-          <br/>
-          <div id="product">
+          <div id="product" class="p-3 p-md-4 bg-white border rounded-3 mb-4">
             <form id="form-product">
               {% if options %}
                 <hr>
-                <h3>{{ text_option }}</h3>
+                <h3 class="h5 mb-3">{{ text_option }}</h3>
                 <div>
                   {% for option in options %}
 
@@ -205,9 +204,9 @@
 
               {% if subscription_plans %}
                 <hr/>
-                <h3>{{ text_subscription }}</h3>
+                <h3 class="h5 mb-3">{{ text_subscription }}</h3>
                 <div class="mb-3 required">
-                  <select name="subscription_plan_id" id="input-subscription" class="form-select">
+                  <select name="subscription_plan_id" id="input-subscription" class="form-select" aria-label="{{ text_subscription }}" aria-describedby="error-subscription">
                     <option value="">{{ text_select }}</option>
                     {% for subscription_plan in subscription_plans %}
                       <option value="{{ subscription_plan.subscription_plan_id }}">{{ subscription_plan.name }}</option>
@@ -220,10 +219,14 @@
                 </div>
               {% endif %}
               <div class="mb-3">
-                <div class="input-group">
-                  <div class="input-group-text">{{ entry_qty }}</div>
-                  <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control"/>
-                  <button type="submit" id="button-cart" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
+                <label for="input-quantity" class="form-label">{{ entry_qty }}</label>
+                <div class="row g-2">
+                  <div class="col-12 col-sm-4">
+                    <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" inputmode="numeric" aria-describedby="error-quantity"/>
+                  </div>
+                  <div class="col-12 col-sm-8 d-grid">
+                    <button type="submit" id="button-cart" class="btn btn-primary btn-lg btn-block w-100">{{ button_cart }}</button>
+                  </div>
                 </div>
                 <input type="hidden" name="product_id" value="{{ product_id }}" id="input-product-id"/>
                 <div id="error-quantity" class="form-text"></div>
@@ -235,7 +238,7 @@
           </div>
         </div>
       </div>
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs flex-wrap">
         <li class="nav-item"><a href="#tab-description" data-bs-toggle="tab" class="nav-link active">{{ tab_description }}</a></li>
         {% if attribute_groups %}
           <li class="nav-item"><a href="#tab-specification" data-bs-toggle="tab" class="nav-link">{{ tab_attribute }}</a></li>
@@ -244,7 +247,7 @@
           <li class="nav-item"><a href="#tab-review" data-bs-toggle="tab" class="nav-link">{{ tab_review }}</a></li>
         {% endif %}
       </ul>
-      <div class="tab-content">
+      <div class="tab-content p-3 p-md-4 bg-white border rounded-3 mb-4">
         <div id="tab-description" class="tab-pane fade show active mb-4">{{ description }}
           {% if tags %}
             <p>{{ text_tags }}
