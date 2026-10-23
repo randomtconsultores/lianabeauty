@@ -1,32 +1,32 @@
 {% if products %}
   {% if error_warning %}
-    <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-danger alert-dismissible" role="alert"><i class="fa-solid fa-circle-exclamation"></i> {{ error_warning }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
   {% endif %}
   {% if error_stock %}
-    <div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> {{ error_stock }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-danger alert-dismissible" role="alert"><i class="fa-solid fa-circle-exclamation"></i> {{ error_stock }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
   {% endif %}
   {% if success %}
-    <div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-check"></i> {{ success }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-success alert-dismissible" role="status"><i class="fa-solid fa-circle-check"></i> {{ success }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
   {% endif %}
   {% if attention %}
-    <div class="alert alert-info"><i class="fa-solid fa-circle-info"></i> {{ attention }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="alert alert-info" role="status"><i class="fa-solid fa-circle-info"></i> {{ attention }} <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
   {% endif %}
-  <h1>{{ heading_title }}{% if weight %} ({{ weight }}){% endif %}</h1>
-  <div id="output-cart" class="table-responsive">
-    <table class="table table-bordered">
+  <h1 class="mb-4">{{ heading_title }}{% if weight %} ({{ weight }}){% endif %}</h1>
+  <div id="output-cart" class="table-responsive bg-white border rounded-3 mb-4">
+    <table class="table table-bordered align-middle mb-0">
       <thead>
         <tr>
-          <th class="text-center">{{ column_image }}</th>
-          <th>{{ column_name }}</th>
-          <th>{{ column_quantity }}</th>
-          <th class="text-end">{{ column_price }}</th>
-          <th class="text-end">{{ column_total }}</th>
+          <th scope="col" class="text-center">{{ column_image }}</th>
+          <th scope="col">{{ column_name }}</th>
+          <th scope="col">{{ column_quantity }}</th>
+          <th scope="col" class="text-end">{{ column_price }}</th>
+          <th scope="col" class="text-end">{{ column_total }}</th>
         </tr>
       </thead>
       <tbody>
         {% for product in products %}
           <tr>
-            <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail"/></a>{% endif %}</td>
+            <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail border-0" decoding="async"/></a>{% endif %}</td>
             <td class="text-start text-wrap"><a href="{{ product.href }}">{{ product.name }}</a>{% if not product.stock %} <span class="text-danger">***</span>{% endif %}
               <ul class="list-unstyled mb-0">
                 <li>
@@ -52,21 +52,21 @@
             <td>
               <form method="post" data-oc-target="#shopping-cart">
                 <div class="input-group">
-                  <input type="text" name="quantity" value="{{ product.quantity }}" size="1" class="form-control{% if product.minimum %} is-invalid{% endif %}"/>
+                  <input type="text" name="quantity" value="{{ product.quantity }}" size="1" id="input-cart-quantity-{{ loop.index }}" inputmode="numeric" aria-label="{{ column_quantity }}: {{ product.name }}"{% if product.minimum %} aria-describedby="error-cart-quantity-{{ loop.index }}"{% endif %} class="form-control{% if product.minimum %} is-invalid{% endif %}"/>
                   <input type="hidden" name="key" value="{{ product.cart_id }}"/>
-                  <button type="submit" formaction="{{ edit }}" data-bs-toggle="tooltip" title="{{ button_update }}" class="btn btn-primary"><i class="fa-solid fa-rotate"></i></button>
-                  <a href="{{ product.remove }}" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></a>
+                  <button type="submit" formaction="{{ edit }}" data-bs-toggle="tooltip" title="{{ button_update }}" aria-label="{{ button_update }}: {{ product.name }}" class="btn btn-primary"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button>
+                  <a href="{{ product.remove }}" data-bs-toggle="tooltip" title="{{ button_remove }}" aria-label="{{ button_remove }}: {{ product.name }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i></a>
                 </div>
               </form>
               {% if product.minimum %}
-                <small class="invalid-feedback d-block">{{ product.minimum }}</small>
+                <small id="error-cart-quantity-{{ loop.index }}" class="invalid-feedback d-block">{{ product.minimum }}</small>
               {% endif %}</td>
-            <td class="text-end">{{ product.price }}</td>
-            <td class="text-end">{{ product.total }}</td>
+            <td class="text-end text-nowrap">{{ product.price }}</td>
+            <td class="text-end text-nowrap">{{ product.total }}</td>
           </tr>
         {% endfor %}
       </tbody>
-      <tfoot id="checkout-total">
+      <tfoot id="checkout-total" class="table-light">
         {% for total in totals %}
           <tr>
             <td colspan="4" class="text-end"><strong>{{ total.title }}</strong></td>
@@ -78,22 +78,25 @@
   </div>
 
   {% if modules %}
-    <h2>{{ text_next }}</h2>
-    <p>{{ text_next_choice }}</p>
-    <div id="accordion" class="accordion">
-      {% for module in modules %}
-        {{ module }}
-      {% endfor %}
+    <div class="p-3 p-md-4 bg-white border rounded-3 mb-4">
+      <h2 class="h4 mb-3">{{ text_next }}</h2>
+      <p>{{ text_next_choice }}</p>
+      <div id="accordion" class="accordion">
+        {% for module in modules %}
+          {{ module }}
+        {% endfor %}
+      </div>
     </div>
   {% endif %}
 
-  <br/>
-  <div class="row">
-    <div class="col"><a href="{{ continue }}" class="btn btn-light">{{ button_shopping }}</a></div>
-    <div class="col text-end"><a href="{{ checkout }}" class="btn btn-primary">{{ button_checkout }}</a></div>
+  <div class="row g-2 align-items-center mt-4">
+    <div class="col-12 col-sm-6"><a href="{{ continue }}" class="btn btn-light w-100">{{ button_shopping }}</a></div>
+    <div class="col-12 col-sm-6 text-end"><a href="{{ checkout }}" class="btn btn-primary w-100">{{ button_checkout }}</a></div>
   </div>
 {% else %}
-  <h1>{{ heading_title }}</h1>
-  <p>{{ text_no_results }}</p>
-  <div class="text-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+  <h1 class="mb-4">{{ heading_title }}</h1>
+  <div class="p-4 p-md-5 bg-white border rounded-3">
+    <p class="mb-4" role="status">{{ text_no_results }}</p>
+    <div class="text-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+  </div>
 {% endif %}
