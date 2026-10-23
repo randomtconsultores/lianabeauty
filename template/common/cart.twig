@@ -1,5 +1,9 @@
+{% set lb_cart_quantity = 0 %}
+{% for product in products %}
+  {% set lb_cart_quantity = lb_cart_quantity + product.quantity %}
+{% endfor %}
 <div class="dropdown d-grid">
-  <button type="button" data-bs-toggle="dropdown" class="btn btn-lg btn-dark d-block dropdown-toggle"><i class="fa-solid fa-cart-shopping"></i> {{ text_items }}</button>
+  <button type="button" data-bs-toggle="dropdown" class="btn btn-lg btn-dark d-block dropdown-toggle" aria-label="{{ text_items }}"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> <span class="d-none d-lg-inline" aria-hidden="true">{{ text_items }}</span><span class="badge bg-primary ms-1 d-lg-none" aria-hidden="true">{{ lb_cart_quantity }}</span></button>
   <ul class="dropdown-menu dropdown-menu-end p-2">
     {% if products %}
       <li>
