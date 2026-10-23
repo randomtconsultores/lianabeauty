@@ -1,7 +1,19 @@
 {{ header }}
 <div id="common-home" class="container">
   <div class="row">{{ column_left }}
-    <div id="content" class="col">{{ content_top }}{{ content_bottom }}</div>
+    <div id="content" class="col">
+      <section class="lb-v2-hero" aria-labelledby="lb-v2-hero-title">
+        <div class="lb-v2-hero-copy">
+          <p class="lb-v2-eyebrow">Liana Beauty / Perfumes e beleza</p>
+          <h1 id="lb-v2-hero-title">A tua essência.<br><em>A tua presença.</em></h1>
+          <p>O perfume que te acompanha. A beleza que fazes tua.</p>
+          <a class="btn btn-primary" href="#lb-v2-discover">Explora a seleção</a>
+        </div>
+        {# Temporary typographic brand composition; no external image required. #}
+        <div class="lb-v2-hero-mark" aria-hidden="true"><span>LB</span><small>Liana Beauty</small></div>
+      </section>
+      <div id="lb-v2-discover" class="lb-v2-modules" tabindex="-1">{{ content_top }}{{ content_bottom }}</div>
+    </div>
     {{ column_right }}</div>
 </div>
 {{ footer }}

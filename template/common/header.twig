@@ -29,13 +29,15 @@
   {% for link in links %}
     <link href="{{ link.href }}" rel="{{ link.rel }}"/>
   {% endfor %}
+  <link href="catalog/view/stylesheet/lianabeauty-v2.css" type="text/css" rel="stylesheet"/>
   {% for analytic in analytics %}
     {{ analytic }}
   {% endfor %}
 </head>
-<body>
+<body class="lb-v2">
 <div id="container">
-  <div id="alert"></div>
+  <a class="lb-v2-skip" href="#content">Saltar para o conteúdo</a>
+  <div id="alert" aria-live="polite"></div>
   <nav id="top">
     <div class="container">
       <div class="row">
@@ -73,7 +75,7 @@
       </div>
     </div>
   </nav>
-  <header>
+  <header class="lb-v2-header">
     <div class="container">
       <div class="row">
         <div class="col-md-3 col-lg-4">
@@ -81,7 +83,7 @@
             {% if logo %}
               <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-fluid"/></a>
             {% else %}
-              <h1><a href="{{ home }}">{{ name }}</a></h1>
+              <a class="lb-v2-wordmark" href="{{ home }}">Liana Beauty<span aria-hidden="true">.</span></a>
             {% endif %}
           </div>
         </div>
