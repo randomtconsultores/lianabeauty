@@ -1,31 +1,59 @@
+<style>
+/* One wishlist form per product: cards on mobile/tablet, table on desktop. */
+#account-wishlist #wishlist .lb-wishlist-label { display: none; }
+@media (max-width: 991.98px) {
+  #account-wishlist #wishlist .lb-wishlist-output { overflow: visible; }
+  #account-wishlist #wishlist .lb-wishlist-table { display: block; border: 0; }
+  #account-wishlist #wishlist .lb-wishlist-table > thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  #account-wishlist #wishlist .lb-wishlist-table > tbody { display: grid; gap: 1rem; }
+  #account-wishlist #wishlist .lb-wishlist-table > tbody > tr { display: grid; grid-template-columns: 72px minmax(0, 1fr); grid-template-areas: "image name" "image stock" "price price" "actions actions"; gap: .75rem; min-width: 0; padding: 1rem; background: #fff; border: 1px solid var(--lb-line); border-radius: .75rem; }
+  #account-wishlist #wishlist .lb-wishlist-table > tbody > tr > td { display: block; min-width: 0; padding: 0; border: 0; background: transparent; box-shadow: none; text-align: start !important; white-space: normal !important; overflow-wrap: anywhere; }
+  #account-wishlist #wishlist .lb-wishlist-image { grid-area: image; }
+  #account-wishlist #wishlist .lb-wishlist-image img { width: 72px; max-width: 100%; height: 72px; object-fit: contain; }
+  #account-wishlist #wishlist .lb-wishlist-name { grid-area: name; }
+  #account-wishlist #wishlist .lb-wishlist-name > a { color: var(--lb-ink); font-weight: 650; }
+  #account-wishlist #wishlist .lb-wishlist-table .lb-wishlist-model { display: none; }
+  #account-wishlist #wishlist .lb-wishlist-stock { grid-area: stock; }
+  #account-wishlist #wishlist .lb-wishlist-label { display: block; color: var(--lb-muted); font-size: .875rem; }
+  #account-wishlist #wishlist .lb-wishlist-table > tbody > tr > .lb-wishlist-price { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; grid-area: price; }
+  #account-wishlist #wishlist .lb-wishlist-price .price { min-width: 0; text-align: end; overflow-wrap: anywhere; }
+  #account-wishlist #wishlist .lb-wishlist-table > tbody > tr > .lb-wishlist-actions { grid-area: actions; width: auto !important; }
+  #account-wishlist #wishlist .lb-wishlist-actions > .d-grid { gap: .5rem; }
+  #account-wishlist #wishlist .lb-wishlist-actions .btn { width: 100%; min-height: 44px; margin-bottom: 0 !important; white-space: normal; }
+}
+@media (min-width: 576px) and (max-width: 991.98px) {
+  #account-wishlist #wishlist .lb-wishlist-table > tbody { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+</style>
 {% if products %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th class="text-center">{{ column_image }}</th>
-          <th>{{ column_name }}</th>
-          <th>{{ column_model }}</th>
-          <th class="text-end">{{ column_stock }}</th>
-          <th class="text-end">{{ column_price }}</th>
-          <th class="text-end">{{ column_action }}</th>
+  <div class="table-responsive lb-wishlist-output">
+    <table class="table table-bordered table-hover lb-wishlist-table" role="table">
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col" class="text-center">{{ column_image }}</th>
+          <th role="columnheader" scope="col">{{ column_name }}</th>
+          <th role="columnheader" scope="col" class="lb-wishlist-model">{{ column_model }}</th>
+          <th role="columnheader" scope="col" class="text-end">{{ column_stock }}</th>
+          <th role="columnheader" scope="col" class="text-end">{{ column_price }}</th>
+          <th role="columnheader" scope="col" class="text-end">{{ column_action }}</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody role="rowgroup">
         {% set product_row = 0 %}
         {% for product in products %}
-          <tr>
-            <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}"/></a>{% endif %}</td>
-            <td><a href="{{ product.href }}">{{ product.name }}</a>
+          <tr role="row">
+            <td role="cell" class="text-center lb-wishlist-image">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}"/></a>{% endif %}</td>
+            <td role="cell" class="lb-wishlist-name"><a href="{{ product.href }}">{{ product.name }}</a>
               <form id="form-product-{{ product_row }}" action="{{ cart_add }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
                 <input type="hidden" name="product_id" value="{{ product.product_id }}"/>
                 <input type="hidden" name="quantity" value="{{ product.minimum }}"/>
               </form>
             </td>
-            <td>{{ product.model }}</td>
-            <td class="text-end">{{ product.stock }}</td>
-            <td class="text-end text-nowrap">
+            <td role="cell" class="lb-wishlist-model">{{ product.model }}</td>
+            <td role="cell" class="text-end lb-wishlist-stock"><span class="lb-wishlist-label" aria-hidden="true">{{ column_stock }}</span><span>{{ product.stock }}</span></td>
+            <td role="cell" class="text-end text-nowrap lb-wishlist-price">
               {% if product.price %}
+                <span class="lb-wishlist-label" aria-hidden="true">{{ column_price }}</span>
                 <div class="price">
                   {% if not product.special %}
                     {{ product.price }}
@@ -34,7 +62,7 @@
                   {% endif %}
                 </div>
               {% endif %}</td>
-            <td class="text-end text-nowrap" style="width: 1px;">
+            <td role="cell" class="text-end text-nowrap lb-wishlist-actions" style="width: 1px;">
               <div class="d-grid">
                 <button type="submit" form="form-product-{{ product_row }}" class="btn btn-primary mb-1">{{ button_cart }}</button>
                 <a href="{{ product.remove }}" class="btn btn-danger">{{ button_remove }}</a>
