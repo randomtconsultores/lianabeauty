@@ -33,22 +33,14 @@
               <td class="lb-mini-cart-description"><a href="{{ product.href }}">{{ product.name }}</a>
                 <div class="lb-mini-cart-line-price"><span class="text-nowrap">x {{ product.quantity }}</span><span class="text-end">{{ product.total }}</span></div>
                 <ul class="list-unstyled mb-0">
-                  <li>
-                    <small> - {{ text_model }}: {{ product.model }}</small>
-                  </li>
                   {% for option in product.option %}
                     <li>
-                      <small> - {{ option.name }}: {{ option.value }}</small>
+                      <small>{{ option.name }}: {{ option.value }}</small>
                     </li>
                   {% endfor %}
                   {% if product.subscription %}
                     <li>
-                      <small> - {{ text_subscription }}: {{ product.subscription }}</small>
-                    </li>
-                  {% endif %}
-                  {% if product.reward %}
-                    <li>
-                      <small> - {{ text_points }}: {{ product.reward }}</small>
+                      <small>{{ text_subscription }}: {{ product.subscription }}</small>
                     </li>
                   {% endif %}
                 </ul>
