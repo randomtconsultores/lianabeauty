@@ -1,4 +1,17 @@
 {{ header }}
+<style>
+/* Comparison only: stable column widths and a local horizontal scroll area. */
+#product-compare .lb-compare-scroll { width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; margin-bottom: 1.5rem; }
+#product-compare .lb-compare-table { table-layout: fixed; margin-bottom: 0; }
+#product-compare .lb-compare-table td { vertical-align: top; white-space: normal; overflow-wrap: anywhere; }
+#product-compare .lb-compare-table img { max-width: 100%; height: auto; }
+#product-compare .lb-compare-actions { display: grid; gap: .5rem; }
+#product-compare .lb-compare-actions .btn { width: 100%; min-height: 44px; white-space: normal; }
+@media (min-width: 576px) {
+  #product-compare .lb-compare-scroll { scroll-padding-inline-start: 130px; }
+  #product-compare .lb-compare-table > tbody > tr > td:first-child:not([colspan]) { position: sticky; inset-inline-start: 0; z-index: 1; background-color: #fff; }
+}
+</style>
 <div id="product-compare" class="container">
   <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
@@ -14,7 +27,14 @@
     <div id="content" class="col">{{ content_top }}
       <h1>{{ heading_title }}</h1>
       {% if products %}
-        <table class="table table-bordered">
+        <div class="lb-compare-scroll" role="region" aria-label="{{ heading_title }}" tabindex="0">
+        <table class="table table-bordered lb-compare-table" style="width: {{ 130 + (products|length * 240) }}px;">
+          <colgroup>
+            <col style="width: 130px;"/>
+            {% for product in products %}
+              <col style="width: 240px;"/>
+            {% endfor %}
+          </colgroup>
           <thead>
             <tr>
               <td colspan="{{ products|length + 1 }}"><strong>{{ text_product }}</strong></td>
@@ -118,7 +138,7 @@
             <td></td>
             {% for product in products %}
               <td class="text-center">
-                <form action="{{ cart_add }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
+                <form class="lb-compare-actions" action="{{ cart_add }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
                   <button type="submit" id="button-confirm" class="btn btn-primary btn-block">{{ button_cart }}</button>
                   <input type="hidden" name="product_id" value="{{ product.product_id }}"/> <input type="hidden" name="quantity" value="{{ product.minimum }}"/>
                   <a href="{{ product.remove }}" class="btn btn-danger btn-block">{{ button_remove }}</a>
@@ -127,6 +147,7 @@
             {% endfor %}
           </tr>
         </table>
+        </div>
       {% else %}
         <p>{{ text_no_results }}</p>
         <div class="text-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
