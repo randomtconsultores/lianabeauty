@@ -1,4 +1,16 @@
 {{ header }}
+<style>
+/* Home layout only; preserve module markup and horizontal carousel gestures. */
+#common-home #content { min-width: 0; max-width: 100%; }
+#common-home .lb-hero { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+#common-home .lb-hero > * { min-width: 0; max-width: 100%; }
+#common-home .lb-hero-copy { overflow-wrap: anywhere; }
+#common-home :is(#lb-selection, .lb-modules) { min-width: 0; max-width: 100%; }
+@media (max-width: 767.98px) {
+  #common-home .lb-hero { grid-template-columns: minmax(0, 1fr); }
+  #common-home .lb-modules > .row { margin-left: 0; margin-right: 0; }
+}
+</style>
 {% set has_modules = (content_top|trim != '') or (content_bottom|trim != '') %}
 <div id="common-home" class="container">
   <div class="row">{{ column_left }}
